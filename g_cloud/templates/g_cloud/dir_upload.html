@@ -1,0 +1,11 @@
+{% block content %}
+  <p> ....... </p>
+ <form method="post" enctype="multipart/form-data">
+   {% csrf_token %}
+   {{ ttl.as_p }}
+   
+   <input type="file" name="directory" multiple = "true" webkitdirectory="true" directory = "true"/>
+   <button type="submit">Upload</button>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+<table border="1" colspan="2" width="100%">
+   <tr>
+     <th width="60%">File</td>
+     <th width="40%">Download</td> 
+   </tr>
+ {% for f in folder %}
+   <tr>
+     <td width="60%">{{f}}</td>
+     <td width="40%" align="center"><a href="{% url "g_cloud:download" f dir %}"> {{f}} </td></a>
+     
+   </tr>
+ {% endfor %}
+ </table>
