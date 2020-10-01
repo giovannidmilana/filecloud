@@ -18,11 +18,12 @@ from django.urls import path
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from g_cloud import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
     #path('', include('g_cloud.urls', namespace='g_cloud')),    
     path('g_cloud/', include('g_cloud.urls', namespace='g_cloud')),
 ]

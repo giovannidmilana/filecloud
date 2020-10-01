@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 app_name = 'cloud'
 
 urlpatterns = [
-
+    path('g_cloud/', views.index, name='index'),
     #path('files_list/<str:path>/', views.download, name='download'),
     #path('files_list/<str:file_name>/', views.download, name='download'),
     #path('folder_list/<str:file_name>/<str:path>/', views.download, name='download'),

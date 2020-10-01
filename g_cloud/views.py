@@ -16,6 +16,12 @@ import shutil
 
 # Create your views here.
 
+def index(request):
+    return render(request, 'g_cloud/index.html')
+
+
+
+
 def photo_save(request):
     if request.method != 'POST':
         # No data submitted create a blank form.
