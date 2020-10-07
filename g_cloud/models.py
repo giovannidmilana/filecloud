@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 #from django.conf import settings
 #from django.core.files.storage import FileSystemStorage
@@ -9,42 +10,53 @@ import os
 
 # Create your models here.
 
-class Image(models.Model):
-    #photo = models.ImageField(upload_to='customer/logo', storage=fs, null=True, blank=True)
-    #photo = models.ImageField(upload_to='images/') 
-    photo = models.ImageField(upload_to = 'images/', default = 'media/images/users.jpg')
+class Folder(models.Model):
+     folder = models.CharField(max_length=30)
+     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     
-    
+     def __str__(self):
+         return self.folder
+
+class ImagePhoto(models.Model):
+    photo = models.ImageField(upload_to = 'files/', default = 'media/images/users.jpg')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
     def get_photo_url(self):
         if self.photo and hasattr(self.photo, 'url'):
             return self.photo.url
         else:
             return "images/users.png"
-
+    def filename(self):
+        print(self.photo.name)
+        return os.path.basename(self.photo.name)
 
 class Document(models.Model):
-    upload = models.FileField(upload_to='uploads/', default = 'media/images/users.jpg')
-    
-    def get_document_url(self):
-        if self.upload and hasattr(self.upload, 'url'):
-            return self.upload.url
-        else:
-            return "files/users.png"
-
+    upload = models.FileField(upload_to='files/', default = 'media/images/users.jpg')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+    def filename(self):
+        print(self.upload.name)
+        return os.path.basename(self.upload.name)
 
 class MultiFile(models.Model):
     uploads = models.FileField(upload_to='files/', default = 'media/images/users.jpg')
-    
-    
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+    def filename(self):
+        print(self.uploads.name)
+        return os.path.basename(self.uploads.name)
 
 class DirUpload(models.Model):
-    directory = models.FileField(upload_to='temp/', default = 'media/images/users.jpg')
-    #title =  models.CharField(max_length=30)
-    
-    
-class Title(models.Model):
+    directory = models.FileField(upload_to='files/', default = 'media/images/users.jpg')
     title =  models.CharField(max_length=30)
-    doc = models.ForeignKey(DirUpload, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+    def filename(self):
+        print(self.directory.name)
+        return os.path.basename(self.directory.name)
 
 
+     
+     
 
+     

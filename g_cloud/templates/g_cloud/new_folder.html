@@ -1,0 +1,9 @@
+{% extends "g_cloud/base.html" %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save folder</button>
+  </form>
+{% endblock content %}

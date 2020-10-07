@@ -1,29 +1,15 @@
-<table border="1" colspan="2" width="100%">
-   <tr>
-     <th width="60%">File</td>
-     <th width="40%">Download</td> 
-   </tr>
- {% for file in files %}
-   <tr>
-     <td width="60%">{{file}}</td>
-     <td width="40%" align="center"><a href="{% url "g_cloud:download" file_name=file %}"> {{file}}  </td></a>
-   </tr>
- {% endfor %}  
-</table>
-
-
-<table border="1" colspan="2" width="100%">
-   <tr>
-     <th width="60%">Folder</td>
-     <th width="40%">path</td> 
-   </tr>
- {% for folder in folders %}
-  {% for f in folder %}
+{% extends "g_cloud/base.html" %}
+{% block content %}
+  <table border="1" colspan="2" width="100%">
      <tr>
-      <td width="60%">{{f}}</td>
-      <td width="40%" align="center"><a href="{% url "g_cloud:folder_list" f  %}"> {{f}} </td></a>
-    </tr>
- {% endfor %}  
-  {% endfor %}
-   
-</table>
+       <th width="60%">File1</td>
+       <th width="40%">Download1</td> 
+     </tr>
+   {% for file in files %}
+     <tr>
+       <td width="60%">{{file.folder}}</td>
+       <td width="40%" align="center"><a href="{% url "g_cloud:folder_list"  file.id %}"> {{file.folder}}  </td></a>
+     </tr>
+   {% endfor %}  
+  </table>
+{% endblock content %}

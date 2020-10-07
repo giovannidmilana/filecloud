@@ -1,3 +1,34 @@
-<p><a href="{% url 'g_cloud:files_list' %}">files</a></p>
-<p><a href="{% url 'g_cloud:dir_upload' %}">folder upload</a></p>
-<p><a href="{% url 'g_cloud:multi_file' %}">file_upload</a></p>
+{% extends "g_cloud/base.html" %}
+
+
+{% block content %}
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <a href="{% url 'g_cloud:new_folder' %}">
+  <i class="material-icons" style="font-size:36px;margin-left:900px;">create_new_folder</i>
+  <p style="font-size:15px;margin-left:900px;">Create New Folder</p></a>
+   
+  
+   
+   {% for file in files %}
+
+     <!DOCTYPE html>
+     <html>
+     <head>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+     <style type="text/css">
+     .fa_custom {
+     color: #003243
+     }
+     </style>
+     </head>
+     <body>
+     <a href="{% url "g_cloud:folder_list" file.id %}"
+     <i class=" fa fa-folder fa_custom fa-3x"></i>
+     <p style="text-align:center;font-size:22px">{{file.folder}}&nbsp;&nbsp;&nbsp;</p></a>
+     
+     </body>
+     </html>
+   
+   {% endfor %}  
+
+{% endblock content %}

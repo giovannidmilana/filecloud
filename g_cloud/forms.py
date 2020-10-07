@@ -1,19 +1,21 @@
 from django import forms
 from django.forms import ClearableFileInput
-from .models import Image, Document, MultiFile, DirUpload, Title
+from .models import ImagePhoto, Document, MultiFile, DirUpload, Folder
 
 class ImageForm(forms.ModelForm):
+    folder = forms.ModelChoiceField(queryset=Folder.objects.all(),
+                                    to_field_name = 'folder',
+                                    empty_label="Select Folder")
     class Meta:
-        model = Image
-        fields = ['photo']
-        #photo = forms.ImageField(label = 'Choose your image',  help_text = 'The image should be cool.')
+        model = ImagePhoto
+        fields = ['photo', 'folder',]
         photo = forms.ImageField()
-
+        
 
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ('upload',)
+        fields = ('upload', 'folder',)
 
 
 class MultiFileForm(forms.ModelForm):
@@ -33,13 +35,13 @@ class FileFieldForm(forms.Form):
 class DirForm(forms.ModelForm):
     class Meta:
         model = DirUpload
-        fields = ('directory',)
-        
-        
-class TitleForm(forms.ModelForm):
-    class Meta:
-        model = Title
         fields = ('title',)
         
+      
+class FolderForm(forms.ModelForm):
+    class Meta:
+        model = Folder
+        fields = ('folder',)
+     
 
 

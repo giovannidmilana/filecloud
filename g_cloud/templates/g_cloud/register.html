@@ -1,0 +1,14 @@
+{% extends "g_cloud/base.html" %}
+
+{% block content %}
+
+  <form method="post" action="{% url 'g_cloud:register' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+        
+    <button name="submit">register</button>
+    <input type="hidden" name="next"
+      value="{% url 'g_cloud:index' %}" />
+  </form>
+    
+{% endblock content %}

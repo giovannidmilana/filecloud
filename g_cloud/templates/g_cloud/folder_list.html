@@ -1,13 +1,14 @@
-<table border="1" colspan="2" width="100%">
-   <tr>
-     <th width="60%">File</td>
-     <th width="40%">Download</td> 
-   </tr>
- {% for f in folder %}
-   <tr>
-     <td width="60%">{{f}}</td>
-     <td width="40%" align="center"><a href="{% url "g_cloud:download" f dir %}"> {{f}} </td></a>
-     
-   </tr>
+{% extends "g_cloud/base.html" %}
+{% block content %}
+
+ {% for file in files %}
+     {% for fi in files %}
+       {% for f in fi %}
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+           <a href="{% url "g_cloud:download" f.id %}"
+           <i class="fa fa-file-text" style="font-size:38px;color:blue"></i>
+           <p style="margin-right:50px;font-size:11px">{{f.filename}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></a> 
  {% endfor %}
- </table>
+   {% endfor %}
+     {% endfor %}
+ {% endblock content %}
