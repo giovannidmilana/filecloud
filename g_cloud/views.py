@@ -116,10 +116,6 @@ def download(request, file_name):
                  i = t.upload.url.split('/')
              except Document.DoesNotExist:
                  return HttpResponse(status=404)
-    #t = ImagePhoto.objects.get(id=file_name)
-    #t = DirUpload.objects.get(pk=file_name)
-    #i = t.photo.url.split('/')
-    #i = t.directory.url.split('/')
     file_path = settings.MEDIA_ROOT + i[-2] + '/' + i[-1]
     filename, file_extension = os.path.splitext(file_path)
     chunk_size = 8192
