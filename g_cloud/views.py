@@ -35,31 +35,33 @@ def index(request):
         return render(request, 'g_cloud/test.html')
 
 @login_required
-def photo_save(request):
+def photo_save(request, *args, **kwargs):
+    
     if request.method != 'POST':
         # No data submitted create a blank form.
-        form  = ImageForm()
+        form  = ImageForm(user=request.user)
     else:
         #POST data submitted; process data.
-        form = ImageForm(request.POST, request.FILES)
+        form = ImageForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             new_image = form.save(commit=False)
             new_image.owner = request.user
             new_image.save()
             context = {'form': form}
             return render(request, 'g_cloud/new_photo.html', context)
-    print(form)
+    #print(form)
     context = {'form': form}
     return render(request, 'g_cloud/new_photo.html', context)
     
-    
+def current_user(request):
+    return request.user.id
     
 @login_required
 def file_upload(request):
     if request.method != 'POST':
-        form = DocumentForm()
+        form = DocumentForm(request.user)
     else:
-        form = DocumentForm(request.POST, request.FILES)
+        form = DocumentForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             new_file = form.save(commit=False)
             new_file.owner = request.user
@@ -101,11 +103,23 @@ def files_list(request):
 
 @login_required    
 def download(request, file_name):
-    print(file_name)
+    try:
+        t = DirUpload.objects.get(pk=file_name, owner=request.user)
+        i = t.directory.url.split('/')
+    except DirUpload.DoesNotExist:
+         try:
+             t = ImagePhoto.objects.get(id=file_name, owner=request.user)
+             i = t.photo.url.split('/')
+         except ImagePhoto.DoesNotExist:
+             try:
+                 t = Document.objects.get(id=file_name, owner=request.user)
+                 i = t.upload.url.split('/')
+             except Document.DoesNotExist:
+                 return HttpResponse(status=404)
     #t = ImagePhoto.objects.get(id=file_name)
-    t = DirUpload.objects.get(pk=file_name)
+    #t = DirUpload.objects.get(pk=file_name)
     #i = t.photo.url.split('/')
-    i = t.directory.url.split('/')
+    #i = t.directory.url.split('/')
     file_path = settings.MEDIA_ROOT + i[-2] + '/' + i[-1]
     filename, file_extension = os.path.splitext(file_path)
     chunk_size = 8192
@@ -128,7 +142,7 @@ def download(request, file_name):
     
 @login_required    
 def folder_list(request, f, path=settings.MEDIA_ROOT):
-    fldr = Folder.objects.get(id=f)
+    fldr = Folder.objects.get(id=f, owner=request.user)
     i = ImagePhoto.objects.filter(folder=f, owner=request.user)
     d = Document.objects.filter(folder=f, owner=request.user)
     du = DirUpload.objects.filter(title=fldr.folder, owner=request.user)
@@ -258,4 +272,4 @@ def del4_():
 #del3_()
 #del_()
 #del_dir()
-#test()
+
